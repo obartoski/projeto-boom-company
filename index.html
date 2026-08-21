@@ -858,4 +858,45 @@
       console.info('[Boom Company] Substituir por link real: ' + btn.dataset.hotmart);
     });
   });
+  // --- CARROSSEL BOOM ---
+const tcSlides = document.querySelectorAll('.tc-slide');
+const tcDots = document.querySelectorAll('.tc-dot');
+const tcPrev = document.getElementById('tcPrev');
+const tcNext = document.getElementById('tcNext');
+
+let tcCurrent = 0;
+
+function showTeacher(index) {
+  if (index < 0) {
+    index = tcSlides.length - 1;
+  }
+
+  if (index >= tcSlides.length) {
+    index = 0;
+  }
+
+  tcCurrent = index;
+
+  tcSlides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === tcCurrent);
+  });
+
+  tcDots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === tcCurrent);
+  });
+}
+
+tcPrev.addEventListener('click', () => {
+  showTeacher(tcCurrent - 1);
+});
+
+tcNext.addEventListener('click', () => {
+  showTeacher(tcCurrent + 1);
+});
+
+tcDots.forEach((dot) => {
+  dot.addEventListener('click', () => {
+    showTeacher(Number(dot.dataset.go));
+  });
+});
 </script>
