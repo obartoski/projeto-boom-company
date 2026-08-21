@@ -279,22 +279,73 @@
   .btn-modality:hover .arrow{transform:translateX(5px);}
 
   /* ---------- experiência ---------- */
-  .exp-grid{
-    display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:150px; gap:14px; margin-top:64px;
+  .teacher-carousel{
+    position:relative; margin-top:64px; border-radius:20px; overflow:hidden;
+    aspect-ratio:16/8; background:var(--bg-2);
   }
-  .exp-item{position:relative; border-radius:12px; overflow:hidden;}
-  .exp-item:hover .media-placeholder{transform:scale(1.05);}
-  .exp-item.i1{grid-column:span 3; grid-row:span 3;}
-  .exp-item.i2{grid-column:span 3; grid-row:span 2;}
-  .exp-item.i3{grid-column:span 2; grid-row:span 2;}
-  .exp-item.i4{grid-column:span 2; grid-row:span 2;}
-  .exp-item.i5{grid-column:span 2; grid-row:span 2;}
-  .exp-item.i6{grid-column:span 4; grid-row:span 3;}
-  .exp-item.i7{grid-column:span 2; grid-row:span 3;}
-  @media(max-width:900px){
-    .exp-grid{grid-template-columns:repeat(2,1fr); grid-auto-rows:180px;}
-    .exp-item.i1,.exp-item.i2,.exp-item.i3,.exp-item.i4,.exp-item.i5,.exp-item.i6,.exp-item.i7{grid-column:span 1; grid-row:span 2;}
+  @media(max-width:640px){.teacher-carousel{aspect-ratio:4/5;}}
+  .tc-track{position:relative; width:100%; height:100%;}
+  .tc-slide{
+    position:absolute; inset:0; opacity:0; visibility:hidden;
+    transition:opacity 1s var(--ease);
   }
+  .tc-slide.active{opacity:1; visibility:visible; z-index:2;}
+  .tc-slide img{
+    width:100%; height:100%; object-fit:cover; filter:grayscale(0.25) contrast(1.03);
+    transform:scale(1.02);
+    transition:transform 8s linear;
+  }
+  .tc-slide.active img{transform:scale(1.09);}
+  .tc-slide::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(17,17,17,0.85) 0%, rgba(17,17,17,0.15) 45%, transparent 70%);
+  }
+  .tc-caption{
+    position:absolute; left:32px; bottom:30px; right:32px; z-index:3;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .tc-name-wrap{overflow:hidden;}
+  .tc-name{
+    font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:.01em;
+    font-size:clamp(28px,4.4vw,52px); line-height:1;
+    transform:translateY(115%); opacity:0;
+    transition:transform .7s var(--ease) .15s, opacity .7s var(--ease) .15s;
+  }
+  .tc-slide.active .tc-name{transform:translateY(0); opacity:1;}
+  .tc-role-wrap{overflow:hidden; margin-top:8px;}
+  .tc-role{
+    font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--brand);
+    transform:translateY(110%); opacity:0;
+    transition:transform .6s var(--ease) .3s, opacity .6s var(--ease) .3s;
+  }
+  .tc-slide.active .tc-role{transform:translateY(0); opacity:1;}
+  .tc-index{
+    font-size:12px; letter-spacing:.1em; color:var(--ink-dim); flex-shrink:0; padding-bottom:6px;
+  }
+ 
+  .tc-nav{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:4;
+    width:46px; height:46px; border-radius:50%;
+    background:rgba(17,17,17,0.5); backdrop-filter:blur(6px);
+    border:1px solid rgba(244,243,239,0.25);
+    display:flex; align-items:center; justify-content:center;
+    transition:background .3s, border-color .3s, transform .3s;
+    color:var(--ink); font-size:18px;
+  }
+  .tc-nav:hover{background:var(--brand); border-color:var(--brand); color:#fff;}
+  .tc-nav.prev{left:20px;}
+  .tc-nav.next{right:20px;}
+  @media(max-width:640px){.tc-nav{width:38px; height:38px; font-size:15px;}}
+ 
+  .tc-dots{
+    position:absolute; top:22px; right:28px; z-index:4;
+    display:flex; gap:8px;
+  }
+  .tc-dot{
+    width:8px; height:8px; border-radius:50%; background:rgba(244,243,239,0.28);
+    transition:background .3s, transform .3s; cursor:pointer;
+  }
+  .tc-dot.active{background:var(--brand); transform:scale(1.25);}
 
   /* ---------- videos ---------- */
   .video-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:64px;}
@@ -534,9 +585,9 @@
   <div class="container">
     <p class="eyebrow reveal">03 — Experiência</p>
     <h2 class="display reveal" style="font-size:clamp(34px,5vw,64px); margin-top:18px; text-transform:none; font-family:'Inter',sans-serif; font-weight:800; max-width:760px;">
-      A Boom é mais do que apenas uma empresa,<br>é uma família! Venha conhecer a nossa equipe.
+      A Boom não é sobre repetir um treino. É sobre quem conduz o movimento.
     </h2>
-
+ 
     <div class="teacher-carousel reveal" id="teacherCarousel">
       <div class="tc-track">
         <div class="tc-slide active" data-index="0">
@@ -580,8 +631,20 @@
           </div>
         </div>
       </div>
+ 
+      <button class="tc-nav prev" id="tcPrev" aria-label="Professor anterior">‹</button>
+      <button class="tc-nav next" id="tcNext" aria-label="Próximo professor">›</button>
+      <div class="tc-dots" id="tcDots">
+        <span class="tc-dot active" data-go="0"></span>
+        <span class="tc-dot" data-go="1"></span>
+        <span class="tc-dot" data-go="2"></span>
+        <span class="tc-dot" data-go="3"></span>
+      </div>
+    </div>
+    <p class="placeholder-note" style="margin-top:14px;">[SUBSTITUIR fotos e nomes pelos professores reais da Boom Company]</p>
+  </div>
 </section>
-
+ 
 <div class="container"><div class="divider"></div></div>
 
 <!-- ============ VÍDEOS ============ -->
