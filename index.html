@@ -235,117 +235,344 @@
     font-size:clamp(30px, 5.4vw, 68px); line-height:1.08; letter-spacing:-0.01em; font-weight:800; max-width:1000px;
   }
   .about-statement em{font-style:normal; color:var(--ink-dim);}
-  .about-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:64px; margin-top:72px; align-items:end;}
-  @media(max-width:900px){.about-grid{grid-template-columns:1fr; gap:40px;}}
-  .about-img{position:relative; border-radius:14px; overflow:hidden; aspect-ratio:4/5;}
-  .about-copy p{font-size:16px; line-height:1.75; color:#c9c7c1; max-width:440px; margin-bottom:36px;}
-  .stat-row{display:flex; gap:44px; flex-wrap:wrap;}
-  .stat b{display:block; font-family:'Anton',sans-serif; font-size:44px; color:var(--brand);}
-  .stat span{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim);}
 
-  /* ---------- modalidades ---------- */
+  /* Cartão retangular com foto de fundo e informações sobrepostas — funciona em qualquer largura de tela */
+  .about-feature{
+    position:relative; margin-top:56px; border-radius:20px; overflow:hidden;
+    aspect-ratio:16/9; background:var(--bg-2);
+  }
+  @media(max-width:900px){.about-feature{aspect-ratio:4/5;}}
+  .about-feature .media-placeholder{width:100%; height:100%; border-radius:0; border:none;}
+  .about-feature::after{
+    content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(0deg, rgba(10,10,10,0.94) 0%, rgba(10,10,10,0.62) 32%, rgba(10,10,10,0.08) 62%, transparent 100%);
+  }
+  .about-feature-content{
+    position:absolute; left:0; right:0; bottom:0; z-index:2;
+    padding:44px 48px; display:flex; justify-content:space-between; align-items:flex-end; gap:40px; flex-wrap:wrap;
+  }
+  @media(max-width:640px){
+    .about-feature-content{padding:26px 22px; flex-direction:column; align-items:flex-start; gap:22px;}
+  }
+  .about-feature-copy{font-size:15px; line-height:1.7; color:#e7e5df; max-width:420px;}
+  .stat-row{display:flex; gap:36px; flex-wrap:wrap;}
+  .stat b{display:block; font-family:'Anton',sans-serif; font-size:38px; color:var(--brand); line-height:1;}
+  .stat span{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim);}
+
+  /* ---------- modalidades — imagem full-bleed com informações sobrepostas ---------- */
   .modality{
-    min-height:92vh; display:flex; align-items:center; position:relative; overflow:hidden;
+    min-height:92vh; display:flex; align-items:flex-end; position:relative; overflow:hidden;
     padding:80px 0;
   }
-  .modality-inner{display:grid; grid-template-columns:1fr 1fr; gap:0; width:100%; align-items:center;}
-  @media(max-width:900px){.modality-inner{grid-template-columns:1fr; gap:36px;}}
-  .modality-media{position:relative; aspect-ratio:3/4; border-radius:18px; overflow:hidden;}
+  .modality-media{position:absolute; inset:0; z-index:0;}
+  .modality-media .media-placeholder{width:100%; height:100%; border-radius:0; border:none;}
   .modality:hover .modality-media .media-placeholder{transform:scale(1.03);}
-  .modality-media::after{content:''; position:absolute; inset:0; mix-blend-mode:multiply; opacity:.35; pointer-events:none;}
-  .modality-copy{padding:0 60px;}
-  @media(max-width:900px){.modality-copy{padding:0;}}
+  /* tingimento de cor da modalidade sobre a foto */
+  .modality::before{content:''; position:absolute; inset:0; z-index:1; mix-blend-mode:multiply; opacity:.35; pointer-events:none;}
+  /* gradiente escuro para legibilidade do texto sobreposto */
+  .modality::after{
+    content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(0deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.05) 68%, transparent 100%);
+  }
+  .modality-overlay{position:relative; z-index:2; width:100%;}
+  .modality-overlay .container{display:flex;}
+  .modality-copy{max-width:560px;}
   .modality-kicker{font-size:12px; letter-spacing:.24em; text-transform:uppercase; margin-bottom:18px; display:flex; align-items:center; gap:10px;}
-  .modality-kicker::before{content:''; width:26px; height:1px; background:currentColor;}
+  .modality-kicker::before{content:''; width:26px; height:1px; background:currentColor; flex-shrink:0;}
   .modality-title{font-size:clamp(48px,7.4vw,108px); margin-bottom:22px;}
-  .modality-desc{font-size:16px; line-height:1.7; color:#cfcdc7; max-width:400px; margin-bottom:34px;}
+  .modality-desc{font-size:16px; line-height:1.7; color:#e7e5df; max-width:420px; margin-bottom:34px;}
+
+  #dance{color:var(--dance);}
+  #dance::before{background:linear-gradient(160deg, var(--dance), transparent 60%);}
+  #dance .modality-overlay .container{justify-content:flex-start;}
+  #dance .btn-modality{border:1px solid rgba(245,207,59,0.45); color:var(--ink);}
+  #dance .btn-modality:hover{background:var(--dance); border-color:var(--dance); color:#171400;}
 
   #jump{color:var(--jump);}
-  #jump .modality-media{box-shadow:0 30px 90px -30px var(--jump-glow);}
-  #jump .modality-media::after{background:linear-gradient(160deg, var(--jump), transparent 60%);}
+  #jump::before{background:linear-gradient(200deg, var(--jump), transparent 60%);}
+  #jump .modality-overlay .container{justify-content:flex-end;}
+  #jump .modality-copy{text-align:right;}
+  #jump .modality-kicker{flex-direction:row-reverse;}
+  #jump .modality-desc{margin-left:auto;}
   #jump .btn-modality{border:1px solid rgba(63,125,251,0.45); color:var(--ink);}
   #jump .btn-modality:hover{background:var(--jump); border-color:var(--jump);}
 
-  #dance{color:var(--dance);}
-  #dance .modality-inner{direction:rtl;}
-  #dance .modality-inner > *{direction:ltr;}
-  #dance .modality-media{box-shadow:0 30px 90px -30px var(--dance-glow);}
-  #dance .modality-media::after{background:linear-gradient(160deg, var(--dance), transparent 60%);}
-  #dance .btn-modality{border:1px solid rgba(245,207,59,0.45); color:var(--ink);}
-  #dance .btn-modality:hover{background:var(--dance); border-color:var(--dance); color:#171400;}
+  @media(max-width:768px){
+    .modality{padding:60px 0;}
+    .modality-copy{max-width:100%;}
+    #jump .modality-copy{text-align:left;}
+    #jump .modality-kicker{flex-direction:row;}
+    #jump .modality-desc{margin-left:0;}
+    #jump .modality-overlay .container{justify-content:flex-start;}
+  }
 
   .btn-modality{display:inline-flex; align-items:center; gap:10px; padding:15px 26px; border-radius:100px; font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; transition:all .35s var(--ease);}
   .btn-modality .arrow{transition:transform .35s var(--ease);}
   .btn-modality:hover .arrow{transform:translateX(5px);}
 
-  /* ---------- experiência ---------- */
-  .teacher-carousel{
-    position:relative; margin-top:64px; border-radius:20px; overflow:hidden;
-    aspect-ratio:16/8; background:var(--bg-2);
+
+  /* ---------- experiênciia ---------- */
+ /* ---------- profissionais / carrossel ---------- */
+
+.professionals-carousel{
+  position:relative;
+  margin-top:64px;
+}
+
+.professionals-viewport{
+  overflow:hidden;
+  cursor:grab;
+  touch-action:pan-y;
+  user-select:none;
+}
+
+.professionals-viewport.dragging{
+  cursor:grabbing;
+}
+
+.professionals-track{
+  display:flex;
+  gap:24px;
+  transition:transform .65s var(--ease);
+  will-change:transform;
+}
+
+.professional-card{
+  flex:0 0 calc(82% - 12px);
+  display:grid;
+  grid-template-columns:minmax(280px, .9fr) 1.1fr;
+  min-height:560px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:var(--bg-1);
+  overflow:hidden;
+}
+
+.professional-photo{
+  position:relative;
+  min-height:560px;
+  overflow:hidden;
+  background:var(--bg-2);
+}
+
+.professional-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  transition:transform .8s var(--ease);
+  pointer-events:none;
+}
+
+.professional-card:hover .professional-photo img{
+  transform:scale(1.025);
+}
+
+/* Placeholder temporário enquanto não tiver a foto */
+.professional-photo-placeholder{
+  width:100%;
+  height:100%;
+  min-height:560px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(244,243,239,.03) 0,
+      rgba(244,243,239,.03) 1px,
+      transparent 1px,
+      transparent 14px
+    ),
+    linear-gradient(150deg,var(--bg-2),var(--bg-3));
+  color:var(--ink-dim);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.professional-info{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:56px;
+}
+
+.professional-number{
+  color:var(--brand);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.18em;
+  margin-bottom:auto;
+}
+
+.professional-role{
+  margin-bottom:16px;
+  color:var(--ink-dim);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+.professional-name{
+  font-family:'Anton',sans-serif;
+  font-size:clamp(52px,6vw,92px);
+  line-height:.95;
+  text-transform:uppercase;
+  margin-bottom:28px;
+}
+
+.professional-description{
+  max-width:470px;
+  color:#c9c7c1;
+  font-size:15px;
+  line-height:1.75;
+}
+
+.professional-social{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:28px;
+  width:max-content;
+  color:var(--ink);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  transition:color .3s;
+}
+
+.professional-social:hover{
+  color:var(--brand);
+}
+
+.carousel-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:30px;
+  gap:24px;
+}
+
+.carousel-counter{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+
+.carousel-counter-current{
+  color:var(--brand);
+}
+
+.carousel-counter-total{
+  color:var(--ink-dim);
+}
+
+.carousel-controls{
+  display:flex;
+  gap:10px;
+}
+
+.carousel-arrow{
+  width:52px;
+  height:52px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  transition:
+    background .3s,
+    color .3s,
+    border-color .3s,
+    transform .3s;
+}
+
+.carousel-arrow:hover{
+  background:var(--brand);
+  border-color:var(--brand);
+  color:#fff;
+  transform:translateY(-2px);
+}
+
+.carousel-arrow:disabled{
+  opacity:.3;
+  cursor:default;
+  transform:none;
+  background:transparent;
+  border-color:var(--line);
+  color:var(--ink);
+}
+
+@media(max-width:900px){
+
+  .professional-card{
+    flex-basis:88%;
+    grid-template-columns:1fr;
+    min-height:auto;
   }
-  @media(max-width:640px){.teacher-carousel{aspect-ratio:4/5;}}
-  .tc-track{position:relative; width:100%; height:100%;}
-  .tc-slide{
-    position:absolute; inset:0; opacity:0; visibility:hidden;
-    transition:opacity 1s var(--ease);
+
+  .professional-photo{
+    min-height:auto;
+    aspect-ratio:4/5;
   }
-  .tc-slide.active{opacity:1; visibility:visible; z-index:2;}
-  .tc-slide img{
-    width:100%; height:100%; object-fit:cover; filter:grayscale(0.25) contrast(1.03);
-    transform:scale(1.02);
-    transition:transform 8s linear;
+
+  .professional-photo-placeholder{
+    min-height:0;
+    aspect-ratio:4/5;
   }
-  .tc-slide.active img{transform:scale(1.09);}
-  .tc-slide::after{
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(0deg, rgba(17,17,17,0.85) 0%, rgba(17,17,17,0.15) 45%, transparent 70%);
+
+  .professional-info{
+    padding:36px 28px;
+    min-height:360px;
   }
-  .tc-caption{
-    position:absolute; left:32px; bottom:30px; right:32px; z-index:3;
-    display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;
+
+  .professional-number{
+    margin-bottom:70px;
   }
-  .tc-name-wrap{overflow:hidden;}
-  .tc-name{
-    font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:.01em;
-    font-size:clamp(28px,4.4vw,52px); line-height:1;
-    transform:translateY(115%); opacity:0;
-    transition:transform .7s var(--ease) .15s, opacity .7s var(--ease) .15s;
+
+}
+
+@media(max-width:640px){
+  .professionals-carousel{
+    margin-top:44px;
   }
-  .tc-slide.active .tc-name{transform:translateY(0); opacity:1;}
-  .tc-role-wrap{overflow:hidden; margin-top:8px;}
-  .tc-role{
-    font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--brand);
-    transform:translateY(110%); opacity:0;
-    transition:transform .6s var(--ease) .3s, opacity .6s var(--ease) .3s;
+
+  .professional-card{
+    flex-basis:92%;
   }
-  .tc-slide.active .tc-role{transform:translateY(0); opacity:1;}
-  .tc-index{
-    font-size:12px; letter-spacing:.1em; color:var(--ink-dim); flex-shrink:0; padding-bottom:6px;
+
+  .professionals-track{
+    gap:14px;
   }
- 
-  .tc-nav{
-    position:absolute; top:50%; transform:translateY(-50%); z-index:4;
-    width:46px; height:46px; border-radius:50%;
-    background:rgba(17,17,17,0.5); backdrop-filter:blur(6px);
-    border:1px solid rgba(244,243,239,0.25);
-    display:flex; align-items:center; justify-content:center;
-    transition:background .3s, border-color .3s, transform .3s;
-    color:var(--ink); font-size:18px;
+
+  .professional-info{
+    padding:28px 22px 32px;
   }
-  .tc-nav:hover{background:var(--brand); border-color:var(--brand); color:#fff;}
-  .tc-nav.prev{left:20px;}
-  .tc-nav.next{right:20px;}
-  @media(max-width:640px){.tc-nav{width:38px; height:38px; font-size:15px;}}
- 
-  .tc-dots{
-    position:absolute; top:22px; right:28px; z-index:4;
-    display:flex; gap:8px;
+
+  .professional-name{
+    font-size:52px;
   }
-  .tc-dot{
-    width:8px; height:8px; border-radius:50%; background:rgba(244,243,239,0.28);
-    transition:background .3s, transform .3s; cursor:pointer;
+
+  .carousel-arrow{
+    width:46px;
+    height:46px;
   }
-  .tc-dot.active{background:var(--brand); transform:scale(1.25);}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .professionals-track,
+  .professional-photo img{
+    transition:none;
+  }
+}
 
   /* ---------- videos ---------- */
   .video-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:64px;}
@@ -404,9 +631,12 @@
   .cert-copy{padding:60px 60px 60px 0;}
   @media(max-width:900px){.cert-copy{padding:0 0 60px;}}
 
-  /* ---------- galeria ---------- */
-  .gallery{display:grid; grid-template-columns:repeat(12,1fr); gap:16px;}
-  .g-item{position:relative; overflow:hidden; border-radius:10px;}
+  /* ---------- galeria — grid simétrico e proporcional ---------- */
+  .gallery{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+    max-width:1000px; margin-left:auto; margin-right:auto;
+  }
+  .g-item{position:relative; overflow:hidden; border-radius:10px; aspect-ratio:4/5;}
   .g-item:hover .media-placeholder{transform:scale(1.05);}
   .g-item .g-cap{
     position:absolute; left:14px; bottom:14px; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
@@ -414,15 +644,11 @@
     background:rgba(17,17,17,0.55); padding:6px 10px; border-radius:100px; backdrop-filter:blur(4px);
   }
   .g-item:hover .g-cap{opacity:1; transform:translateY(0);}
-  .g1{grid-column:span 5; grid-row:span 2; aspect-ratio:4/5;}
-  .g2{grid-column:span 4; aspect-ratio:4/3;}
-  .g3{grid-column:span 3; aspect-ratio:3/4;}
-  .g4{grid-column:span 3; aspect-ratio:1/1;}
-  .g5{grid-column:span 4; aspect-ratio:4/3;}
-  .g6{grid-column:span 5; aspect-ratio:16/9;}
   @media(max-width:900px){
-    .gallery{grid-template-columns:repeat(2,1fr);}
-    .g1,.g2,.g3,.g4,.g5,.g6{grid-column:span 1; grid-row:span 1; aspect-ratio:4/5;}
+    .gallery{grid-template-columns:repeat(2,1fr); gap:16px;}
+  }
+  @media(max-width:480px){
+    .gallery{grid-template-columns:1fr;}
   }
 
   /* ---------- cta final ---------- */
@@ -480,7 +706,7 @@
   <a href="#experiencia">Experiência</a>
   <a href="#licenciamento">Licencie</a>
   <a href="#contato">Contato</a>
-  <a href="#alunos" class="nav-cta">Quero Fazer Parte</a>
+  
 </div>
 
 <!-- ============ HERO ============ -->
@@ -500,14 +726,15 @@
     </div>
     <h1 class="hero-title display">
       <span class="line"><span>MOVA-SE</span></span>
+
       <span class="line"><span>COM A BOOM</span></span>
     </h1>
     <div class="hero-bottom">
       <p class="hero-sub reveal">Aulas, energia e comunidade em movimento. Uma marca construída para quem vive de ritmo, dentro e fora da quadra. <span class="placeholder-note">[COPY PROVISÓRIO]</span></p>
       <div class="hero-ctas reveal">
         <a href="#a-boom" class="btn btn-primary">Conheça a Boom <span class="arrow">→</span></a>
-        <a href="#licenciamento" class="btn btn-outline">Seja um Licenciado</a>
-        <a href="#licenciamento" class="btn btn-outline">Seja um ALuno Boom</a>
+        <a href="#licenciamento" class="btn btn-outline">Seja um Licenciado</a>        
+        <a href="#alunos" class="btn btn-outline">Seja um Aluno BOOM</a>        
       </div>
     </div>
   </div>
@@ -522,14 +749,12 @@
       <span class="placeholder-note" style="display:block; font-size:12px; margin-top:10px;">[COPY PROVISÓRIO — ajustar com o posicionamento oficial]</span>
     </h2>
 
-    <div class="about-grid">
-      <div class="about-img reveal">
-        <div class="media-placeholder" role="img" aria-label="Espaço reservado para foto real da equipe/marca">
-          <span>IMAGEM — EQUIPE / MARCA</span>
-        </div>
+    <div class="about-feature reveal">
+      <div class="media-placeholder" role="img" aria-label="Espaço reservado para foto real da equipe/marca">
+        <span>IMAGEM — EQUIPE / MARCA</span>
       </div>
-      <div class="about-copy reveal">
-        <p>A Boom nasceu do movimento literal e figurado. Cada modalidade carrega sua própria energia, mas todas compartilham a mesma raiz: gente de verdade se movendo junto. <span class="placeholder-note">[SUBSTITUIR POR CONTEÚDO REAL]</span></p>
+      <div class="about-feature-content">
+        <p class="about-feature-copy">A Boom nasceu do movimento literal e figurado. Cada modalidade carrega sua própria energia, mas todas compartilham a mesma raiz: gente de verdade se movendo junto. <span class="placeholder-note">[SUBSTITUIR POR CONTEÚDO REAL]</span></p>
         <div class="stat-row">
           <div class="stat"><b>00+</b><span>Alunos ativos<br><span class="placeholder-note">[dado provisório]</span></span></div>
           <div class="stat"><b>00+</b><span>Licenciados<br><span class="placeholder-note">[dado provisório]</span></span></div>
@@ -549,103 +774,308 @@
   </div>
 
   <div class="modality" id="dance">
-    <div class="container modality-inner">
-      <div class="modality-media reveal">
-        <div class="media-placeholder" role="img" aria-label="Espaço reservado para foto real de aula de Boom Dance">
-          <span>IMAGEM — BOOM DANCE</span>
-        </div>
+    <div class="modality-media reveal">
+      <div class="media-placeholder" role="img" aria-label="Espaço reservado para foto real de aula de Boom Dance">
+        <span>IMAGEM — BOOM DANCE</span>
       </div>
-      <div class="modality-copy reveal">
-        <div class="modality-kicker">Modalidade 01</div>
-        <h3 class="modality-title display">BOOM<br>DANCE</h3>
-        <p class="modality-desc">Coreografia, presença e comunidade, a dança como experiência coletiva, não só como exercício. <span class="placeholder-note">[COPY PROVISÓRIO]</span></p>
-        <a href="#experiencia" class="btn-modality">Conhecer Boom Dance <span class="arrow">→</span></a>
+    </div>
+    <div class="modality-overlay">
+      <div class="container">
+        <div class="modality-copy">
+          <div class="modality-kicker">Modalidade 01</div>
+          <h3 class="modality-title display">BOOM<br>DANCE</h3>
+          <p class="modality-desc">Coreografia, presença e comunidade, a dança como experiência coletiva, não só como exercício. <span class="placeholder-note">[COPY PROVISÓRIO]</span></p>
+          <a href="#experiencia" class="btn-modality">Conhecer Boom Dance <span class="arrow">→</span></a>
+        </div>
       </div>
     </div>
   </div>
 
-   <div class="modality" id="jump">
-    <div class="container modality-inner">
-      <div class="modality-media reveal">
-        <div class="media-placeholder" role="img" aria-label="Espaço reservado para foto real de aula de Boom Jump">
-          <span>IMAGEM — BOOM JUMP</span>
-        </div>
+
+  <div class="modality" id="jump">
+    <div class="modality-media reveal">
+      <div class="media-placeholder" role="img" aria-label="Espaço reservado para foto real de aula de Boom Jump">
+        <span>IMAGEM — BOOM JUMP</span>
       </div>
-      <div class="modality-copy reveal">
-        <div class="modality-kicker">Modalidade 02</div>
-        <h3 class="modality-title display">BOOM<br>JUMP</h3>
-        <p class="modality-desc">Uma experiência de treino com energia, ritmo e movimento. Cardio de alta intensidade guiado por música. <span class="placeholder-note">[COPY PROVISÓRIO]</span></p>
-        <a href="#experiencia" class="btn-modality">Conhecer Boom Jump <span class="arrow">→</span></a>
+    </div>
+    <div class="modality-overlay">
+      <div class="container">
+        <div class="modality-copy">
+          <div class="modality-kicker">Modalidade 02</div>
+          <h3 class="modality-title display">BOOM<br>JUMP</h3>
+          <p class="modality-desc">Uma experiência de treino com energia, ritmo e movimento. Cardio de alta intensidade guiado por música. <span class="placeholder-note">[COPY PROVISÓRIO]</span></p>
+          <a href="#experiencia" class="btn-modality">Conhecer Boom Jump <span class="arrow">→</span></a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ EQUIPE BOOM ============ -->
+<!-- ============ EQUIPEE BOOM ============ -->
 <section class="section-pad" id="experiencia">
   <div class="container">
+
     <p class="eyebrow reveal">03 — EQUIPE BOOM</p>
     <h2 class="display reveal" style="font-size:clamp(34px,5vw,64px); margin-top:18px; text-transform:none; font-family:'Inter',sans-serif; font-weight:800; max-width:760px;">
       Venha conhecer a Família BOOM!
     </h2>
+
+
+
+    
+
+   <h2
+  class="display reveal"
+  style="
+    font-size:clamp(44px,7vw,96px);
+    margin-top:18px;
+    max-width:900px;
+  "
+>
+  QUEM FAZ A<br>
+  <span style="color:var(--brand);">BOOM SE MOVER.</span>
+</h2>
+
+<h2
+  class="display reveal"
+  style="
+    font-size:clamp(34px,5vw,64px);
+    margin-top:18px;
+    text-transform:none;
+    font-family:'Inter',sans-serif;
+    font-weight:800;
+    max-width:760px;
+  "
+>
  
-    <div class="teacher-carousel reveal" id="teacherCarousel">
-      <div class="tc-track">
-        <div class="tc-slide active" data-index="0">
-          <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?q=80&w=1600&auto=format&fit=crop" alt="Professor da Boom Company — imagem provisória">
-          <div class="tc-caption">
-            <div>
-              <div class="tc-name-wrap"><span class="tc-name">Nome do Professor <span class="placeholder-note" style="font-size:11px;">[SUBSTITUIR]</span></span></div>
-              <div class="tc-role-wrap"><span class="tc-role">Boom Jump</span></div>
+</h2>
+
+    <div class="professionals-carousel reveal">
+
+      <div
+        class="professionals-viewport"
+        id="professionalsViewport"
+        aria-label="Profissionais da Boom"
+      >
+
+        <div class="professionals-track" id="professionalsTrack">
+
+          <!-- PROFISSIONAL 01 -->
+          <article class="professional-card">
+
+            <div class="professional-photo">
+              <!--
+              Quando tiver a foto, substitua o placeholder abaixo por:
+
+              <img
+                src="raphael.jpg"
+                alt="Raphael conduzindo uma aula BOOM Dance"
+              >
+              -->
+
+              <div class="professional-photo-placeholder">
+                FOTO — RAPHAEL
+              </div>
             </div>
-            <span class="tc-index">01 / 04</span>
-          </div>
-        </div>
-        <div class="tc-slide" data-index="1">
-          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600&auto=format&fit=crop" alt="Professora da Boom Company — imagem provisória">
-          <div class="tc-caption">
-            <div>
-              <div class="tc-name-wrap"><span class="tc-name">Nome da Professora <span class="placeholder-note" style="font-size:11px;">[SUBSTITUIR]</span></span></div>
-              <div class="tc-role-wrap"><span class="tc-role">Boom Dance</span></div>
+
+            <div class="professional-info">
+
+              <span class="professional-number">01</span>
+
+              <p class="professional-role">
+                Fundador • Professor
+              </p>
+
+              <h3 class="professional-name">
+                Raphael
+              </h3>
+
+              <p class="professional-description">
+                Breve apresentação do Raphael e da sua relação com a BOOM.
+                Substitua este conteúdo pela descrição oficial posteriormente.
+              </p>
+
+              <a
+                href="#"
+                class="professional-social"
+                target="_blank"
+                rel="noopener"
+              >
+                Instagram <span>→</span>
+              </a>
+
             </div>
-            <span class="tc-index">02 / 04</span>
-          </div>
-        </div>
-        <div class="tc-slide" data-index="2">
-          <img src="https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?q=80&w=1600&auto=format&fit=crop" alt="Professor da Boom Company — imagem provisória">
-          <div class="tc-caption">
-            <div>
-              <div class="tc-name-wrap"><span class="tc-name">Nome do Professor <span class="placeholder-note" style="font-size:11px;">[SUBSTITUIR]</span></span></div>
-              <div class="tc-role-wrap"><span class="tc-role">Boom Jump</span></div>
+          </article>
+
+
+          <!-- PROFISSIONAL 02 -->
+          <article class="professional-card">
+
+            <div class="professional-photo">
+              <div class="professional-photo-placeholder">
+                FOTO — PROFISSIONAL 02
+              </div>
             </div>
-            <span class="tc-index">03 / 04</span>
-          </div>
-        </div>
-        <div class="tc-slide" data-index="3">
-          <img src="https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?q=80&w=1600&auto=format&fit=crop" alt="Professora da Boom Company — imagem provisória">
-          <div class="tc-caption">
-            <div>
-              <div class="tc-name-wrap"><span class="tc-name">Nome da Professora <span class="placeholder-note" style="font-size:11px;">[SUBSTITUIR]</span></span></div>
-              <div class="tc-role-wrap"><span class="tc-role">Boom Dance</span></div>
+
+            <div class="professional-info">
+
+              <span class="professional-number">02</span>
+
+              <p class="professional-role">
+                Professor • BOOM Dance
+              </p>
+
+              <h3 class="professional-name">
+                Nome
+              </h3>
+
+              <p class="professional-description">
+                Pequena apresentação do profissional. Idealmente uma ou duas
+                frases, mantendo esta área simples e editorial.
+              </p>
+
+              <a
+                href="#"
+                class="professional-social"
+                target="_blank"
+                rel="noopener"
+              >
+                Instagram <span>→</span>
+              </a>
+
             </div>
-            <span class="tc-index">04 / 04</span>
-          </div>
+          </article>
+
+
+          <!-- PROFISSIONAL 03 -->
+          <article class="professional-card">
+
+            <div class="professional-photo">
+              <div class="professional-photo-placeholder">
+                FOTO — PROFISSIONAL 03
+              </div>
+            </div>
+
+            <div class="professional-info">
+
+              <span class="professional-number">03</span>
+
+              <p class="professional-role">
+                Professor • BOOM Dance
+              </p>
+
+              <h3 class="professional-name">
+                Nome
+              </h3>
+
+              <p class="professional-description">
+                Pequena apresentação do profissional. Depois basta trocar
+                nome, função, descrição, fotografia e Instagram.
+              </p>
+
+              <a
+                href="#"
+                class="professional-social"
+                target="_blank"
+                rel="noopener"
+              >
+                Instagram <span>→</span>
+              </a>
+
+            </div>
+          </article>
+
+
+          <!-- PROFISSIONAL 04 -->
+          <article class="professional-card">
+
+            <div class="professional-photo">
+              <div class="professional-photo-placeholder">
+                FOTO — PROFISSIONAL 04
+              </div>
+            </div>
+
+            <div class="professional-info">
+
+              <span class="professional-number">04</span>
+
+              <p class="professional-role">
+                Professor • BOOM Dance
+              </p>
+
+              <h3 class="professional-name">
+                Nome
+              </h3>
+
+              <p class="professional-description">
+                Pequena apresentação do profissional.
+              </p>
+
+              <a
+                href="#"
+                class="professional-social"
+                target="_blank"
+                rel="noopener"
+              >
+                Instagram <span>→</span>
+              </a>
+
+            </div>
+          </article>
+
         </div>
       </div>
- 
-      <button class="tc-nav prev" id="tcPrev" aria-label="Professor anterior">‹</button>
-      <button class="tc-nav next" id="tcNext" aria-label="Próximo professor">›</button>
-      <div class="tc-dots" id="tcDots">
-        <span class="tc-dot active" data-go="0"></span>
-        <span class="tc-dot" data-go="1"></span>
-        <span class="tc-dot" data-go="2"></span>
-        <span class="tc-dot" data-go="3"></span>
+
+
+      <!-- CONTROLES -->
+      <div class="carousel-bottom">
+
+        <div class="carousel-counter" aria-live="polite">
+          <span
+            class="carousel-counter-current"
+            id="professionalCurrent"
+          >
+            01
+          </span>
+
+          <span>/</span>
+
+          <span
+            class="carousel-counter-total"
+            id="professionalTotal"
+          >
+            04
+          </span>
+        </div>
+
+        <div class="carousel-controls">
+
+          <button
+            class="carousel-arrow"
+            id="professionalPrev"
+            type="button"
+            aria-label="Profissional anterior"
+          >
+            ←
+          </button>
+
+          <button
+            class="carousel-arrow"
+            id="professionalNext"
+            type="button"
+            aria-label="Próximo profissional"
+          >
+            →
+          </button>
+
+        </div>
       </div>
+
     </div>
-    <p class="placeholder-note" style="margin-top:14px;">[SUBSTITUIR fotos e nomes pelos professores reais da Boom Company]</p>
+
   </div>
 </section>
- 
+
 <div class="container"><div class="divider"></div></div>
 
 <!-- ============ VÍDEOS ============ -->
@@ -704,7 +1134,7 @@
           <li>Conteúdo liberado no seu tempo <span class="placeholder-note">[a confirmar]</span></li>
         </ul>
         <!-- botão preparado para receber HOTMART_STUDENT_URL -->
-        <a href="#" data-hotmart="HOTMART_STUDENT_URL" class="btn btn-primary">Acessar Aulas <span class="arrow">→</span></a>
+        <a  href="quero-dancar.html" class="btn btn-primary">Acessar Aulas <span class="arrow">→</span></a>
       </div>
       <div class="comm-panel license" id="licenciamento">
         <p class="comm-eyebrow">Para negócios</p>
@@ -717,7 +1147,7 @@
           <li>Suporte contínuo <span class="placeholder-note">[a confirmar]</span></li>
         </ul>
         <!-- botão preparado para receber HOTMART_LICENSE_URL -->
-        <a href="#" data-hotmart="HOTMART_LICENSE_URL" class="btn btn-outline">Quero Ser Licenciado <span class="arrow">→</span></a>
+        <a href="quero-ser-boom.html" class="btn btn-outline">Quero Ser Licenciado <span class="arrow">→</span></a>
       </div>
     </div>
   </div>
@@ -751,7 +1181,7 @@
       <div class="g-item g4 reveal"><div class="media-placeholder"><span>GALERIA 04</span></div><span class="g-cap">Energia</span></div>
       <div class="g-item g5 reveal"><div class="media-placeholder"><span>GALERIA 05</span></div><span class="g-cap">Movimento</span></div>
       <div class="g-item g6 reveal"><div class="media-placeholder"><span>GALERIA 06</span></div><span class="g-cap">Evento Boom</span></div>
-    </div>
+      </div>
   </div>
 </section>
 
@@ -762,8 +1192,10 @@
     <h2 class="final-title display reveal">PRONTO PARA O SEU<br>BOOM?</h2>
     <p class="final-sub reveal">Faça parte da Boom como aluno ou como parceiro de negócio. <span class="placeholder-note">[COPY PROVISÓRIO]</span></p>
     <div class="final-paths reveal">
+
       <a href="#alunos" class="btn btn-primary">Quero ser Aluno <span class="arrow">→</span></a>
       <a href="#licenciamento" class="btn btn-outline">Quero ser licenciado</a>
+
     </div>
   </div>
 </section>
@@ -858,45 +1290,209 @@
       console.info('[Boom Company] Substituir por link real: ' + btn.dataset.hotmart);
     });
   });
-  // --- CARROSSEL BOOM ---
-const tcSlides = document.querySelectorAll('.tc-slide');
-const tcDots = document.querySelectorAll('.tc-dot');
-const tcPrev = document.getElementById('tcPrev');
-const tcNext = document.getElementById('tcNext');
 
-let tcCurrent = 0;
+  // ======================================================
+// CARROSSEL — PROFISSIONAIS
+// ======================================================
 
-function showTeacher(index) {
-  if (index < 0) {
-    index = tcSlides.length - 1;
-  }
+const professionalsViewport =
+  document.getElementById('professionalsViewport');
 
-  if (index >= tcSlides.length) {
-    index = 0;
-  }
+const professionalsTrack =
+  document.getElementById('professionalsTrack');
 
-  tcCurrent = index;
+const professionalCards =
+  [...document.querySelectorAll('.professional-card')];
 
-  tcSlides.forEach((slide, i) => {
-    slide.classList.toggle('active', i === tcCurrent);
-  });
+const professionalPrev =
+  document.getElementById('professionalPrev');
 
-  tcDots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === tcCurrent);
-  });
+const professionalNext =
+  document.getElementById('professionalNext');
+
+const professionalCurrent =
+  document.getElementById('professionalCurrent');
+
+const professionalTotal =
+  document.getElementById('professionalTotal');
+
+
+let professionalIndex = 0;
+
+
+// Número total
+professionalTotal.textContent =
+  String(professionalCards.length).padStart(2, '0');
+
+
+// Descobre quanto cada slide precisa andar
+function getProfessionalStep(){
+
+  if(!professionalCards.length) return 0;
+
+  const cardWidth =
+    professionalCards[0].getBoundingClientRect().width;
+
+  const styles =
+    getComputedStyle(professionalsTrack);
+
+  const gap =
+    parseFloat(styles.gap) || 0;
+
+  return cardWidth + gap;
 }
 
-tcPrev.addEventListener('click', () => {
-  showTeacher(tcCurrent - 1);
+
+// Atualiza posição
+function updateProfessionalsCarousel(){
+
+  const step = getProfessionalStep();
+
+  professionalsTrack.style.transform =
+    `translateX(-${professionalIndex * step}px)`;
+
+  professionalCurrent.textContent =
+    String(professionalIndex + 1).padStart(2, '0');
+
+
+  professionalPrev.disabled =
+    professionalIndex === 0;
+
+  professionalNext.disabled =
+    professionalIndex === professionalCards.length - 1;
+}
+
+
+// Próximo
+professionalNext.addEventListener('click', () => {
+
+  if(professionalIndex < professionalCards.length - 1){
+
+    professionalIndex++;
+
+    updateProfessionalsCarousel();
+  }
 });
 
-tcNext.addEventListener('click', () => {
-  showTeacher(tcCurrent + 1);
+
+// Anterior
+professionalPrev.addEventListener('click', () => {
+
+  if(professionalIndex > 0){
+
+    professionalIndex--;
+
+    updateProfessionalsCarousel();
+  }
 });
 
-tcDots.forEach((dot) => {
-  dot.addEventListener('click', () => {
-    showTeacher(Number(dot.dataset.go));
-  });
+
+// Teclado
+professionalsViewport.setAttribute('tabindex','0');
+
+professionalsViewport.addEventListener('keydown', (event) => {
+
+  if(event.key === 'ArrowRight'){
+
+    professionalNext.click();
+  }
+
+  if(event.key === 'ArrowLeft'){
+
+    professionalPrev.click();
+  }
 });
+
+
+// ======================================================
+// DRAG / SWIPE
+// ======================================================
+
+let dragStartX = 0;
+let dragCurrentX = 0;
+let dragging = false;
+
+
+professionalsViewport.addEventListener('pointerdown', (event) => {
+
+  dragging = true;
+
+  dragStartX = event.clientX;
+
+  dragCurrentX = event.clientX;
+
+  professionalsViewport.classList.add('dragging');
+
+  professionalsViewport.setPointerCapture(event.pointerId);
+});
+
+
+professionalsViewport.addEventListener('pointermove', (event) => {
+
+  if(!dragging) return;
+
+  dragCurrentX = event.clientX;
+});
+
+
+professionalsViewport.addEventListener('pointerup', () => {
+
+  if(!dragging) return;
+
+  dragging = false;
+
+  professionalsViewport.classList.remove('dragging');
+
+  const difference =
+    dragCurrentX - dragStartX;
+
+
+  // Distância mínima necessária para mudar
+  if(Math.abs(difference) > 60){
+
+    // Arrastou para esquerda
+    if(
+      difference < 0 &&
+      professionalIndex < professionalCards.length - 1
+    ){
+      professionalIndex++;
+    }
+
+    // Arrastou para direita
+    else if(
+      difference > 0 &&
+      professionalIndex > 0
+    ){
+      professionalIndex--;
+    }
+  }
+
+  updateProfessionalsCarousel();
+});
+
+
+professionalsViewport.addEventListener('pointercancel', () => {
+
+  dragging = false;
+
+  professionalsViewport.classList.remove('dragging');
+
+  updateProfessionalsCarousel();
+});
+
+
+// Se a largura da tela mudar,
+// recalcula a posição corretamente
+window.addEventListener('resize', () => {
+
+  updateProfessionalsCarousel();
+
+}, { passive:true });
+
+
+// Estado inicial
+updateProfessionalsCarousel();
 </script>
+
+</body>
+</html>
